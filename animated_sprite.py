@@ -2,10 +2,17 @@
 
 from pygame import sprite, time
 
+class Animation:
+    def __init__(self, sequence_of_frames):
+        self.frames = sequence_of_frames
+
 class AnimatedSprite(sprite.Sprite):
-    def __init__(self, position, image_frames, fps=10):
+    def __init__(self, position, image_frames, lines, columns, fps=10):
         sprite.Sprite.__init__(self)
-        self.frames = self.get_frames(image_frames, 3, 4)
+        self.frames = self.get_frames(image_frames, lines, columns)
+        
+        self.animation = Animation(xrange(len(self.frames)))
+        
         self.image = self.frames[0]
         self.rect = self.image.get_rect()
         self.rect.topleft = position
@@ -30,12 +37,13 @@ class AnimatedSprite(sprite.Sprite):
             y = j * frame_height
             for i in xrange(columns):
                 x = i * frame_width
-                frames.append(image.subsurface((x, y, frame_width, frame_height)))
+                frames.append(image.subsurface((x, y,
+                                frame_width, frame_height)))
         
         return frames
         
     
-    def update(self, screen):
+    def update(self):
         '''Update the frame of the animation. It will only occur if the
         time passed since the last update is longer than the delay 
         (1000/fps)'''
@@ -46,9 +54,15 @@ class AnimatedSprite(sprite.Sprite):
             self.last_update = t
         
     def change_frame(self):
-        if self.current_frame < (len(self.frames) - 1):
+        if self.current_frame < (len(self.animation.frames) - 1):
             self.current_frame += 1
         else:
             self.current_frame = 0
         
-        self.image = self.frames[self.current_frame]
+        self.image = self.frames[self.animation.frames[self.current_frame]]
+        
+    def create_animation(self, animation_order):
+        return Animation(animation_order)
+        
+    def set_animation(self, animation):
+        self.animation = animation

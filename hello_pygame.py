@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import pygame
-from animated_sprite import AnimatedSprite
+from animated_sprite import AnimatedSprite, Animation
 from world import World
 
 class Game:
@@ -13,7 +13,10 @@ class Game:
         
         guy_image = pygame.image.load("data/images/guy.png")
         guy_image = guy_image.convert()
-        self.guy = AnimatedSprite([0, 0], guy_image, 10)
+        self.guy = AnimatedSprite([0, 0], guy_image, 3, 4, 10)
+        self.guy_idle = self.guy.create_animation([0, 1, 2, 3, 3, 2, 1, 0])
+        
+        self.guy.set_animation(guy_idle)
         
         world_image = pygame.image.load("data/images/world.png")
         world_image = world_image.convert()
@@ -29,7 +32,7 @@ class Game:
                 elif event.type == pygame.KEYDOWN:
                     self.key_handler(event.key)
             
-            self.guy.update(self.screen)
+            self.guy.update()
             self.screen.blit(self.world.image, self.world.rect)
             self.screen.blit(self.guy.image, self.guy.rect)
             pygame.display.flip()
