@@ -11,7 +11,7 @@ class Game:
         
         self.screen = pygame.display.set_mode(size)
         
-        guy_image = pygame.image.load("data/images/guy_idle.png")
+        guy_image = pygame.image.load("data/images/guy.png")
         guy_image = guy_image.convert()
         self.guy = AnimatedSprite([0, 0], guy_image, 10)
         

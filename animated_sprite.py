@@ -5,7 +5,7 @@ from pygame import sprite, time
 class AnimatedSprite(sprite.Sprite):
     def __init__(self, position, image_frames, fps=10):
         sprite.Sprite.__init__(self)
-        self.frames = self.get_frames(image_frames, 1, 4)
+        self.frames = self.get_frames(image_frames, 3, 4)
         self.image = self.frames[0]
         self.rect = self.image.get_rect()
         self.rect.topleft = position
@@ -25,10 +25,12 @@ class AnimatedSprite(sprite.Sprite):
         
         frames = []
         frame_width = image_width / columns
-        for i in xrange(columns):
-            x = i * frame_width
-            y = 0
-            frames.append(image.subsurface((x, y, frame_width, image_height)))
+        frame_height = image_height / lines
+        for j in xrange(lines):
+            y = j * frame_height
+            for i in xrange(columns):
+                x = i * frame_width
+                frames.append(image.subsurface((x, y, frame_width, frame_height)))
         
         return frames
         
