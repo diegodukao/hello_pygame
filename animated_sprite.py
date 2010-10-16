@@ -3,9 +3,9 @@
 from pygame import sprite, time
 
 class AnimatedSprite(sprite.Sprite):
-    def __init__(self, position, frames, fps=10):
+    def __init__(self, position, image_frames, fps=10):
         sprite.Sprite.__init__(self)
-        self.frames = frames
+        self.frames = self.get_frames(image_frames, 1, 4)
         self.image = self.frames[0]
         self.rect = self.image.get_rect()
         self.rect.topleft = position
@@ -20,7 +20,20 @@ class AnimatedSprite(sprite.Sprite):
             fps = 1
         self.delay = 1000/fps
         
-    def update(self):
+    def get_frames(self, image, lines, columns):
+        image_width, image_height = image.get_size()
+        
+        frames = []
+        frame_width = image_width / columns
+        for i in xrange(columns):
+            x = i * frame_width
+            y = 0
+            frames.append(image.subsurface((x, y, frame_width, image_height)))
+        
+        return frames
+        
+    
+    def update(self, screen):
         '''Update the frame of the animation. It will only occur if the
         time passed since the last update is longer than the delay 
         (1000/fps)'''

@@ -11,15 +11,12 @@ class Game:
         
         self.screen = pygame.display.set_mode(size)
         
-        guy_frames = []
-        guy_image = pygame.image.load("data/images/guy_idle1.png")
-        guy_frames.append(guy_image)
-        guy_image = pygame.image.load("data/images/guy_idle2.png")
-        guy_frames.append(guy_image)
-        
-        self.guy = AnimatedSprite([0, 0], guy_frames, 10)
+        guy_image = pygame.image.load("data/images/guy_idle.png")
+        guy_image = guy_image.convert()
+        self.guy = AnimatedSprite([0, 0], guy_image, 10)
         
         world_image = pygame.image.load("data/images/world.png")
+        world_image = world_image.convert()
         self.world = World([200, 200], world_image)
         
         self.running = True
@@ -32,7 +29,7 @@ class Game:
                 elif event.type == pygame.KEYDOWN:
                     self.key_handler(event.key)
             
-            self.guy.update()
+            self.guy.update(self.screen)
             self.screen.blit(self.world.image, self.world.rect)
             self.screen.blit(self.guy.image, self.guy.rect)
             pygame.display.flip()
