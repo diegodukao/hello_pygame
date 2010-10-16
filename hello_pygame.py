@@ -32,6 +32,7 @@ class Game:
                 elif event.type == pygame.KEYDOWN:
                     self.key_handler(event.key)
             
+            self.guy.update()
             self.screen.blit(self.world.image, self.world.rect)
             self.screen.blit(self.guy.image, self.guy.rect)
             pygame.display.flip()
